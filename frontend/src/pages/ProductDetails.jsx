@@ -119,24 +119,31 @@ const ProductDetails = () => {
         </div>
 
         {/* Related Products */}
-        <div className="flex flex-col items-center mt-20">
-          <div className="flex flex-col items-center w-max">
-            <p className="text-3xl font-medium">Related Products</p>
+        <div className="flex flex-col items-center mt-20 px-4 sm:px-6 md:px-10 lg:px-16 max-w-screen-xl mx-auto">
+          {/* Section Heading */}
+          <div className="flex flex-col items-center text-center">
+            <p className="text-3xl font-medium text-gray-800">
+              Related Products
+            </p>
             <div className="w-20 h-0.5 bg-primary rounded-full mt-2"></div>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6 lg:grid-cols-5 mt-6 w-full">
+
+          {/* Product Grid */}
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6 lg:gap-10 w-full place-items-center">
             {relatedProducts
               .filter((product) => product.inStock)
               .map((product, index) => (
                 <ProductCard key={index} product={product} />
               ))}
           </div>
+
+          {/* See More Button */}
           <button
             onClick={() => {
               navigate("/products");
               scrollTo(0, 0);
             }}
-            className="mx-auto cursor-pointer px-12 my-16 py-2.5 border rounded text-primary hover:bg-primary/10 transition"
+            className="px-12 py-2.5 mt-12 border rounded text-primary hover:bg-primary/10 transition"
           >
             See More
           </button>
