@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
 
 const HomeContactForm = () => {
   const [formData, setFormData] = useState({
@@ -37,10 +35,10 @@ const HomeContactForm = () => {
     }
 
     try {
-            const res = await axios.post(
-              `${BACKEND_URL}/api/contact`,
-              formData
-            );
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/contact`,
+        formData
+      );
 
       toast.success(res.data.message || "Message sent!");
       setFormData({ name: "", email: "", phone: "", details: "" });
@@ -49,10 +47,12 @@ const HomeContactForm = () => {
       toast.error("Something went wrong!");
     }
   };
-  
 
   return (
-    <section id="contact" className="relative z-10 overflow-hidden bg-white py-20 dark:bg-dark lg:py-[120px]">
+    <section
+      id="contact"
+      className="relative z-10 overflow-hidden bg-white py-20 dark:bg-dark lg:py-[120px]"
+    >
       <div className="container mx-auto px-4">
         <div className="-mx-4 flex flex-wrap lg:justify-between">
           <div className="w-full px-4 lg:w-1/2 xl:w-6/12">
@@ -144,9 +144,7 @@ const ContactInfo = ({ icon, title, value }) => (
       {icon}
     </div>
     <div className="w-full">
-      <h4 className="mb-1 text-xl font-bold">
-        {title}
-      </h4>
+      <h4 className="mb-1 text-xl font-bold">{title}</h4>
       <p className="text-base text-body-color dark:text-dark-6">{value}</p>
     </div>
   </div>
