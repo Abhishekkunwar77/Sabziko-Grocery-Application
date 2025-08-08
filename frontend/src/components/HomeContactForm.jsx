@@ -36,7 +36,7 @@ const HomeContactForm = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/contact",
+        "https://sabziko-backend.onrender.com/api/contact",
         formData
       );
       toast.success(res.data.message || "Message sent!");
