@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 
 const HomeContactForm = () => {
   const [formData, setFormData] = useState({
@@ -35,10 +37,11 @@ const HomeContactForm = () => {
     }
 
     try {
-      const res = await axios.post(
-        "https://sabziko-backend.onrender.com/api/contact",
-        formData
-      );
+            const res = await axios.post(
+              `${BACKEND_URL}/api/contact`,
+              formData
+            );
+
       toast.success(res.data.message || "Message sent!");
       setFormData({ name: "", email: "", phone: "", details: "" });
     } catch (err) {
