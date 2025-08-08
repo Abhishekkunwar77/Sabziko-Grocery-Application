@@ -13,28 +13,42 @@ import orderRouter from "./routes/orderRoute.js";
 import { stripeWebhooks } from "./controllers/orderController.js";
 import newsletterRouter from "./routes/newsletter.js";
 import contactRoutes from "./routes/contactRoutes.js";
-import blogRoutes from "./routes/blogRoutes.js"
-
+import blogRoutes from "./routes/blogRoutes.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
 
 await connectDB();
-
 await connectCloudinary();
 
-//allow multiple origin
-const allowedOrigin = ["http://localhost:5173"];
-
+// Stripe webhook must come before body parsers
 app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 
-// middleware configuration
+// Body parsers
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(cors({ origin: allowedOrigin, credentials: true }));
+// ✅ Allow CORS from localhost and Vercel frontend
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://sabziko-grocery-application.vercel.app",
+];
 
-app.get("/", (req, res) => res.send("Api is working"));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
+// Routes
+app.get("/", (req, res) => res.send("API is live 🚀"));
 app.use("/api/user", userRouter);
 app.use("/api/seller", sellerRouter);
 app.use("/api/product", productRouter);
@@ -42,19 +56,11 @@ app.use("/api/cart", cartRouter);
 app.use("/api/address", addressRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/newsletter", newsletterRouter);
-app.use("/api/contact",contactRoutes)
-app.use("/api/blogs", blogRoutes); 
+app.use("/api/contact", contactRoutes);
+app.use("/api/blogs", blogRoutes);
 app.use("/uploads", express.static("uploads"));
 
-
-
-
-
-
-
-
-
-
+// Start server
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`✅ Server running at http://localhost:${port}`);
 });
